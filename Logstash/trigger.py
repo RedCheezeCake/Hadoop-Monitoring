@@ -17,7 +17,7 @@ lc_py_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logst
 
 # LOGSTASH PART
 # Download logstash
-# urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
+urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
 
 # print Extract logstash.tar.gz
 tar = tarfile.open(BASE_DIR+"logstash.tar.gz")
@@ -31,7 +31,7 @@ cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
-# os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
+os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
 urllib.urlretrieve(ls_conf_url, LS_HOME+"logstash.conf")
