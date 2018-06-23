@@ -1,7 +1,7 @@
 import os
 import sys
 
-BASE_DIR = "/home/hm_data_collector/"
+BASE_DIR = "/root/hm_data_collector/"
 
 ##############################
 ## DATA COLLECTOR SET
@@ -13,12 +13,13 @@ import urllib
 import tarfile
 print "BANG!!!!!!!!!!"
 logstash_url = "https://artifacts.elastic.co/downloads/logstash/logstash-6.2.4.tar.gz"
-ls_conf_url = "https://raw.github.com/RedCheezeCake/Hadoop-Monitoring/blob/master/Logstash/logstash.conf"
-lc_py_url = "https://raw.github.com/RedCheezeCake/Hadoop-Monitoring/blob/master/Logstash/local_collector"
+ls_conf_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logstash/logstash.conf"
+lc_py_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logstash/local_collector.py"
 
 # LOGSTASH PART
 # Download logstash
 urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
+print "BANG!!!!!!!!!!"
 
 # print Extract logstash.tar.gz
 tar = tarfile.open(BASE_DIR+"logstash.tar.gz")
@@ -29,6 +30,7 @@ tar.close()
 os.remove(BASE_DIR+"logstash.tar.gz")
 cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
+print "BANG!!!!!!!!!!"
 
 # download logstash-output-mongodb plugin
 os.popen(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-install")
@@ -50,6 +52,7 @@ db_pass = sys.argv[5]
 
 cluster_id   = sys.argv[6]
 cluster_name = sys.argv[7]
+print "BANG!!!!!!!!!!"
 
 # get hostname
 hostname = os.popen('uname -n').readline().rstrip('\n')
@@ -59,6 +62,7 @@ ls_conf_template = open(BASE_DIR + "logstash.conf", 'r').readlines()
 components = {"$DB_IP":db_ip, "$DB_PORT":db_port, "$DB_NAME":db_name, "$DB_USER":db_user,
             "$DB_PASS":db_pass, "$CLUSTER_ID":cluster_id, "$CLUSTER_NAME":cluster_name, "$HOSTNAME":hostname}
 ls_conf = ""
+print "BANG!!!!!!!!!!"
 
 for line in ls_conf_template :
     temp_line = line
