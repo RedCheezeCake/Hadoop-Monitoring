@@ -3,19 +3,17 @@ import sys
 import psutil
 import pymongo
 # read db password argv
-db_password=sys.argv[1]
-print db_password
+db_ip   = sys.argv[1]
+db_port = sys.argv[2]
+db_name = sys.argv[3]
+db_user = sys.argv[4]
+db_pass = sys.argv[5]
 
-# read cluster meta
-cluster_meta = open("./cluster_meta", "r")
-lines = cluster_meta.readlines()
-cluster_id=lines[0].split()[1]
-cluster_name=lines[1].split()[1]
-cluster_meta.close()
+cluster_id   = sys.argv[6]
+cluster_name = sys.argv[7]
 
 # mongodb connection
-connection = pymongo.MongoClient("mongodb://hmUser:"+db_password+"@10.41.4.230/hadoopmon")
-db = connection.hadoopmon
+db = pymongo.MongoClient("mongodb://"+db_user+":"+db_pass+"@"+db_ip+":"+db_port+"/"+db_name)
 col = 'serverResource'
 # col='??'
 #db[col].query
@@ -39,6 +37,6 @@ while True:
         network_bandwidth = float(format(convert_to_mbit(new_value - old_value), '.2f'))
 
         # db insert
-        db[col].insert({"cpu":cpu_percent, "memory":{"total":memory_total, "used":memory_used, "percent":memory_percent}, "network":network_bandwidth})
+        db[col].insert({"clusterId":cluster_id, "clusterName":cluster_name, "cpu":cpu_percent, "memory":{"total":memory_total, "used":memory_used, "percent":memory_percent}, "network":network_bandwidth})
 
     old_value = new_value
