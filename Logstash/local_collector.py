@@ -2,6 +2,7 @@ import os
 import sys
 import psutil
 import pymongo
+
 # read db password argv
 db_ip   = sys.argv[1]
 db_port = sys.argv[2]
