@@ -64,11 +64,9 @@ for line in ls_conf_template :
     temp_line = line
     for comp in components.keys() :
         if comp in temp_line :
-            print 'change!'
             temp_line = temp_line.replace(comp,components[comp])
-            print temp_line
     ls_conf += temp_line
-print ls_conf
+
 # write modified logstash.conf
 ls_conf_file = open(LS_HOME + "logstash.conf", 'w')
 ls_conf_file.write(ls_conf)
@@ -77,7 +75,7 @@ ls_conf_file.close()
 log_file = open(LS_HOME+"log",'a')
 # launch logstash
 os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf &')
-log_file.write("LOGSTASH START " + datetime.datetime.now())
+log_file.write("LOGSTASH START " + str(datetime.datetime.now()))
 # launch local_collector.py
 os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" &")
-log_file.write("LOCAL_COLLECTOR START " + datetime.datetime.now())
+log_file.write("LOCAL_COLLECTOR START " + str(datetime.datetime.now()))
