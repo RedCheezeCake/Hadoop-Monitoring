@@ -17,7 +17,7 @@ lc_py_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logst
 
 # LOGSTASH PART
 # Download logstash
-# urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
+urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
 
 # print Extract logstash.tar.gz
 tar = tarfile.open(BASE_DIR+"logstash.tar.gz")
@@ -26,12 +26,12 @@ tar.close()
 
 # dir rename logstashxxx -> logstash
 LS_HOME = BASE_DIR+"logstash/"
-# os.remove(BASE_DIR+"logstash.tar.gz")
+os.remove(BASE_DIR+"logstash.tar.gz")
 cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
-# os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
+os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
 urllib.urlretrieve(ls_conf_url, LS_HOME+"logstash.conf")
@@ -74,8 +74,8 @@ ls_conf_file.close()
 
 log_file = open(LS_HOME+"log",'a')
 # launch logstash
-os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf &')
-log_file.write("LOGSTASH START " + str(datetime.datetime.now()))
+os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf > ls.log &')
+log_file.write("LOGSTASH START " + str(datetime.datetime.now())+"\n")
 # launch local_collector.py
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" &")
-log_file.write("LOCAL_COLLECTOR START " + str(datetime.datetime.now()))
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" > lc.log  &")
+log_file.write("LOCAL_COLLECTOR START " + str(datetime.datetime.now())+"\n")
