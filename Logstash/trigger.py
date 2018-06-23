@@ -1,23 +1,23 @@
-import os
-import sys
-
-BASE_DIR = "/root/hm_data_collector/"
-
 ##############################
 ## DATA COLLECTOR SET
 ##############################
 # Data Collector : logstash and localResource.py
 # [Logstash] collects data for hadoop state
 # [localResource.py] collects data for server's local resource state
+import os
+import sys
 import urllib
 import tarfile
+import datetime
+
+BASE_DIR = "/root/hm_data_collector/"
 logstash_url = "https://artifacts.elastic.co/downloads/logstash/logstash-6.2.4.tar.gz"
 ls_conf_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logstash/logstash.conf"
 lc_py_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logstash/local_collector.py"
 
 # LOGSTASH PART
 # Download logstash
-urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
+# urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
 
 # print Extract logstash.tar.gz
 tar = tarfile.open(BASE_DIR+"logstash.tar.gz")
@@ -31,7 +31,7 @@ cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
-os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
+# os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
 urllib.urlretrieve(ls_conf_url, LS_HOME+"logstash.conf")
@@ -74,8 +74,10 @@ ls_conf_file = open(LS_HOME + "logstash.conf", 'w')
 ls_conf_file.write(ls_conf)
 ls_conf_file.close()
 
+log_file = open(LS_HOME+"log",'a')
 # launch logstash
-os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf ')
-
+os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf &')
+log_file.write("LOGSTASH START " + datetime.datetime.now())
 # launch local_collector.py
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name)
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" &")
+log_file.write("LOCAL_COLLECTOR START " + datetime.datetime.now())
