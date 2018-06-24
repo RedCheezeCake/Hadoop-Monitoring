@@ -27,10 +27,10 @@ tar.extractall(path=BASE_DIR, members=None)
 tar.close()
 
 # dir rename logstashxxx -> logstash
-LS_HOME = BASE_DIR+"logstash/"
+LS_HOME = BASE_DIR+"logstash-6.2.4/"
 os.remove(BASE_DIR+"logstash.tar.gz")
-cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
-os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
+# cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
+# os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
 os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
