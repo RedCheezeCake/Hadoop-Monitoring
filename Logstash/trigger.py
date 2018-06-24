@@ -70,8 +70,14 @@ for line in ls_conf_template :
 
 log_file = open(LS_HOME+"log",'a')
 # launch logstash
-os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" &')
+pid=os.fork()
+if pid==0: # new process
+    os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" > '+LS_HOME+'/nohup/ls.out &')
+    exit()
 log_file.write("LOGSTASH    "+ str(datetime.datetime.now())+"   START\n")
 # launch local_collector.py
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+" &")
+pid=os.fork()
+if pid==0: # new process
+    os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > '+LS_HOME+'/nohup/ls.out &')
+    exit()
 log_file.write("LOCAL_COLLECTOR    "+ str(datetime.datetime.now())+"   START\n")
