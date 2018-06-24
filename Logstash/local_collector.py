@@ -10,30 +10,15 @@ db_name = raw_input("Database Name : ")
 db_user = raw_input("Database User : ")
 db_pass = raw_input("Database Password : ")
 
-# It is only Testing Configuration ##############################################################
-if db_ip=="" :
-    db_ip = "10.41.4.230"
-if db_port=="" :
-    db_port = "27017"
-if db_name=="" :
-    db_name = "hadoopmon"
-if db_user=="" :
-    db_user = "hmUser"
-if db_pass=="" :
-    db_pass = "nbp123"
+read db password argv
+db_ip   = sys.argv[1]
+db_port = sys.argv[2]
+db_name = sys.argv[3]
+db_user = sys.argv[4]
+db_pass = sys.argv[5]
 
-cluster_id   = "asdasd"
-cluster_name = "asdasd"
-
-# read db password argv
-# db_ip   = sys.argv[1]
-# db_port = sys.argv[2]
-# db_name = sys.argv[3]
-# db_user = sys.argv[4]
-# db_pass = sys.argv[5]
-#
-# cluster_id   = sys.argv[6]
-# cluster_name = sys.argv[7]
+cluster_id   = sys.argv[6]
+cluster_name = sys.argv[7]
 
 # mongodb connection
 client = pymongo.MongoClient("mongodb://"+db_user+":"+db_pass+"@"+db_ip+":"+db_port+"/"+db_name)
