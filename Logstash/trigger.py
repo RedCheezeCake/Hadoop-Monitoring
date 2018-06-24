@@ -68,7 +68,9 @@ for line in ls_conf_template :
     #     line = line.replace('\'', '\\\'')
     ls_conf += line.rstrip('\n')
 
+os.system('mkdir -p '+LS_HOME+'/nohup/')
 log_file = open(LS_HOME+"log",'a')
+
 # launch logstash
 pid=os.fork()
 if pid==0: # new process
