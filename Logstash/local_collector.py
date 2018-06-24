@@ -3,13 +3,6 @@ import sys
 import psutil
 import pymongo
 
-print "========== MONGODB CONFIGURATION =========="
-db_ip = raw_input("Database IP : ")
-db_port = raw_input("Database Port : ")
-db_name = raw_input("Database Name : ")
-db_user = raw_input("Database User : ")
-db_pass = raw_input("Database Password : ")
-
 read db password argv
 db_ip   = sys.argv[1]
 db_port = sys.argv[2]
