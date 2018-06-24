@@ -2,8 +2,9 @@ import os
 import sys
 import psutil
 import pymongo
+import datetime
 
-#read argv
+# read argv
 db_ip   = sys.argv[1]
 db_port = sys.argv[2]
 db_name = sys.argv[3]
@@ -39,6 +40,7 @@ while True:
         network_bandwidth = float(format(convert_to_mbit(new_value - old_value), '.2f'))
 
         # db insert
-        col.insert({"clusterId":cluster_id, "clusterName":cluster_name, "cpu":cpu_percent, "memory":{"total":memory_total, "used":memory_used, "percent":memory_percent}, "network":network_bandwidth})
+        col.insert({"clusterId":cluster_id, "clusterName":cluster_name, "cpu":cpu_percent, "memory":{"total":memory_total,
+                "used":memory_used, "percent":memory_percent}, "network":network_bandwidth, "timastamp":datetime.datetime.utcnow()})
         print "insert!"
     old_value = new_value
