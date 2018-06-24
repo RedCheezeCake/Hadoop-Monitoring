@@ -28,7 +28,7 @@ tar.close()
 
 # dir rename logstashxxx -> logstash
 LS_HOME = BASE_DIR+"logstash/"
-# os.remove(BASE_DIR+"logstash.tar.gz")
+os.remove(BASE_DIR+"logstash.tar.gz")
 cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
@@ -38,7 +38,6 @@ os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb
 # Download conf and local collector
 urllib.urlretrieve(ls_conf_url, LS_HOME+"logstash.conf")
 urllib.urlretrieve(lc_py_url, LS_HOME+"local_collector.py")
-
 
 ##############################
 ## DATA COllECTOR TRIGGER
@@ -74,5 +73,5 @@ log_file = open(LS_HOME+"log",'a')
 os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" &')
 log_file.write("LOGSTASH    "+ str(datetime.datetime.now())+"   START\n")
 # launch local_collector.py
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+"  &")
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+" &")
 log_file.write("LOCAL_COLLECTOR    "+ str(datetime.datetime.now())+"   START\n")
