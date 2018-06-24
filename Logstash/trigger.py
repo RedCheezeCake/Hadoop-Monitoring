@@ -1,14 +1,15 @@
 ##############################
 ## DATA COLLECTOR SET
 ##############################
-# Data Collector : logstash and localResource.py
+# Data Collector : logstash and local_collector.py
 # [Logstash] collects data for hadoop state
-# [localResource.py] collects data for server's local resource state
+# [local_collector.py] collects data for server's local resource state
 import os
 import sys
 import urllib
 import tarfile
 import datetime
+import subprocess
 
 BASE_DIR = "/root/hm_data_collector/"
 logstash_url = "https://artifacts.elastic.co/downloads/logstash/logstash-6.2.4.tar.gz"
@@ -20,13 +21,14 @@ lc_py_url = "https://github.com/RedCheezeCake/Hadoop-Monitoring/raw/master/Logst
 urllib.urlretrieve(logstash_url, BASE_DIR+"logstash.tar.gz")
 
 # print Extract logstash.tar.gz
+print "tar.gz Extract.."
 tar = tarfile.open(BASE_DIR+"logstash.tar.gz")
 tar.extractall(path=BASE_DIR, members=None)
 tar.close()
 
 # dir rename logstashxxx -> logstash
 LS_HOME = BASE_DIR+"logstash/"
-os.remove(BASE_DIR+"logstash.tar.gz")
+# os.remove(BASE_DIR+"logstash.tar.gz")
 cur_ls_name = os.popen('ls ' + BASE_DIR + ' | grep logstash ').readline().rstrip('\n')
 os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
@@ -47,7 +49,6 @@ db_port = sys.argv[2]
 db_name = sys.argv[3]
 db_user = sys.argv[4]
 db_pass = sys.argv[5]
-
 cluster_id   = sys.argv[6]
 cluster_name = sys.argv[7]
 
@@ -61,21 +62,17 @@ components = {"$DB_IP":db_ip, "$DB_PORT":db_port, "$DB_NAME":db_name, "$DB_USER"
 ls_conf = ""
 
 for line in ls_conf_template :
-    temp_line = line
     for comp in components.keys() :
-        if comp in temp_line :
-            temp_line = temp_line.replace(comp,components[comp])
-    ls_conf += temp_line
-
-# write modified logstash.conf
-ls_conf_file = open(LS_HOME + "logstash.conf", 'w')
-ls_conf_file.write(ls_conf)
-ls_conf_file.close()
+        if comp in line :
+            line = line.replace(comp,components[comp])
+    # if '\'' in line :
+    #     line = line.replace('\'', '\\\'')
+    ls_conf += line.rstrip('\n')
 
 log_file = open(LS_HOME+"log",'a')
 # launch logstash
-os.system("nohup "+LS_HOME+'bin/logstash -f '+ LS_HOME+'/logstash.conf > ls.log &')
-log_file.write("LOGSTASH START " + str(datetime.datetime.now())+"\n")
+os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" &')
+log_file.write("LOGSTASH    "+ str(datetime.datetime.now())+"   START\n")
 # launch local_collector.py
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" > lc.log  &")
-log_file.write("LOCAL_COLLECTOR START " + str(datetime.datetime.now())+"\n")
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+"  &")
+log_file.write("LOCAL_COLLECTOR    "+ str(datetime.datetime.now())+"   START\n")
