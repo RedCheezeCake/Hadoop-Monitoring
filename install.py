@@ -105,8 +105,8 @@ cluster_meta_file.write("cluster ID   = "+cluster_id)
 cluster_meta_file.write("\ncluster Name = "+cluster_name)
 cluster_meta_file.write("\nmongodb ip   = "+db_ip)
 cluster_meta_file.write("\nmongodb port = "+db_port)
-cluster_meta_file.write("\nmongodb user = "+db_user)
-cluster_meta_file.write("\nmongodb pwd  = "+db_pass)
+cluster_meta_file.write("\nmongodb user = hm_was")
+cluster_meta_file.write("\nmongodb pwd  = was123")
 cluster_meta_file.close()
 
 # show info
