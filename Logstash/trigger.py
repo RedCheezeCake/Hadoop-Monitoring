@@ -71,9 +71,9 @@ for line in ls_conf_template :
 
 # launch logstash
 print '[Launch logstash]'
-os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"  > ls_log.out &')
+os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"  > /dev/null 2>&1')
 
 # launch local_collector.py
 print '[Launch local_collector.py]'
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > lc_log.out &')
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > /dev/null 2>&1')
 
