@@ -9,7 +9,7 @@ except :
     print "installing pip"
     cmd = "yum install epel-release -y"
     os.system(cmd)
-    cmd = "yum install python-pip"
+    cmd = "yum install python-pip -y"
     os.system(cmd)
     import pip
 else :
