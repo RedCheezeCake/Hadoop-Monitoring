@@ -9,7 +9,6 @@ import sys
 import urllib
 import tarfile
 import datetime
-import subprocess
 
 BASE_DIR = "/root/hm_data_collector/"
 logstash_url = "https://artifacts.elastic.co/downloads/logstash/logstash-6.2.4.tar.gz"
@@ -72,21 +71,9 @@ for line in ls_conf_template :
 
 # launch logstash
 print '[Launch logstash]'
-os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" >/dev/null 2>&1 &')
+os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"  > ls_log.out &')
 
 # launch local_collector.py
 print '[Launch local_collector.py]'
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' >/dev/null 2>&1 &')
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > lc_log.out &'')
 
-# # launch logstash
-# pid=os.fork()
-# if pid==0: # new process
-#     os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\" > '+LS_HOME+'/nohup/ls.out &')
-#     exit()
-# log_file.write("LOGSTASH    "+ str(datetime.datetime.now())+"   START\n")
-# # launch local_collector.py
-# pid=os.fork()
-# if pid==0: # new process
-#     os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > '+LS_HOME+'/nohup/ls.out &')
-#     exit()
-# log_file.write("LOCAL_COLLECTOR    "+ str(datetime.datetime.now())+"   START\n")
