@@ -33,7 +33,7 @@ cluster_name = sys.argv[7]
 hostname = sys.argv[8]
 
 # mongodb connection
-client = pymongo.MongoClient("mongodb://"+db_user+":"+db_pass+"@"+db_ip+":"+db_port+"/"+db_name)
+client = MongoClient("mongodb://"+db_user+":"+db_pass+"@"+db_ip+":"+db_port+"/"+db_name)
 db = client[db_name]
 col = db['ServerResource']
 # col='??'
