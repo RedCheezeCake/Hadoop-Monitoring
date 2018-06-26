@@ -33,6 +33,7 @@ os.remove(BASE_DIR+"logstash.tar.gz")
 # os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
+print 'install mongodb output plug-in
 os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
@@ -55,6 +56,7 @@ cluster_name = sys.argv[7]
 hostname = os.popen('uname -n').readline().rstrip('\n')
 
 # Modify logstash.conf
+print '[Modify logstash.conf]'
 ls_conf_template = open(LS_HOME + "logstash.conf", 'r').readlines()
 components = {"$DB_IP":db_ip, "$DB_PORT":db_port, "$DB_NAME":db_name, "$DB_USER":db_user,
             "$DB_PASS":db_pass, "$CLUSTER_ID":cluster_id, "$CLUSTER_NAME":cluster_name, "$HOSTNAME":hostname}
@@ -68,21 +70,14 @@ for line in ls_conf_template :
     #     line = line.replace('\'', '\\\'')
     ls_conf += line.rstrip('\n')
 
-os.system('mkdir -p '+LS_HOME+'/nohup/')
-log_file = open(LS_HOME+"log",'a')
-
 # launch logstash
-pid=os.fork()
-if pid==0: # new process
-    os.system(LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"')
-    exit()
-log_file.write("LOGSTASH    "+ str(datetime.datetime.now())+"   START\n")
+print '[Launch logstash]'
+os.system(LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"')
+
 # launch local_collector.py
-pid=os.fork()
-if pid==0: # new process
-    os.system("python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname)
-    exit()
-log_file.write("LOCAL_COLLECTOR    "+ str(datetime.datetime.now())+"   START\n")
+print '[Launch local_collector.py]'
+os.system("python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname)
+exit()
 
 # # launch logstash
 # pid=os.fork()
