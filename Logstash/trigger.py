@@ -34,7 +34,7 @@ os.remove(BASE_DIR+"logstash.tar.gz")
 
 # download logstash-output-mongodb plugin
 print 'install mongodb output plug-in'
-os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
+os.system(LS_HOME+"bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
 urllib.urlretrieve(ls_conf_url, LS_HOME+"logstash.conf")
