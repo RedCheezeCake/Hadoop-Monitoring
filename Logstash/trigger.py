@@ -75,5 +75,5 @@ os.system("nohup "+LS_HOME+'bin/logstash -e \"'+ ls_conf+'\"  > ls_log.out &')
 
 # launch local_collector.py
 print '[Launch local_collector.py]'
-os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > lc_log.out &'')
+os.system("nohup python "+LS_HOME+'local_collector.py '+db_ip+" "+ db_port+" "+ db_name+" "+ db_user+" "+ db_pass+" "+ cluster_id+" "+ cluster_name+" "+ hostname+' > lc_log.out &')
 
