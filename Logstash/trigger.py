@@ -33,7 +33,7 @@ os.remove(BASE_DIR+"logstash.tar.gz")
 # os.rename(BASE_DIR+cur_ls_name, BASE_DIR+'logstash')
 
 # download logstash-output-mongodb plugin
-print 'install mongodb output plug-in
+print 'install mongodb output plug-in'
 os.system(BASE_DIR+"logstash/bin/logstash-plugin install logstash-output-mongodb")
 
 # Download conf and local collector
