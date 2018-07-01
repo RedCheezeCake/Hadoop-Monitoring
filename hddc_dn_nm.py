@@ -41,11 +41,11 @@ except :
 host = socket.gethostbyname(socket.gethostname())
 tick = 3
 
-db_user = sys.argv[1]
-db_pass = sys.argv[2]
-db_ip = sys.argv[3]
-db_port = sys.argv[4]
-db_name = sys.argv[5]
+db_ip = sys.argv[1]
+db_port = sys.argv[2]
+db_name = sys.argv[3]
+db_user = sys.argv[4]
+db_pass = sys.argv[5]
 clusterInfo={'clusterId':sys.argv[6], 'clusterName':sys.argv[7]}
 
 # MongoClient
